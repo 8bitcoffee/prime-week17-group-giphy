@@ -8,10 +8,10 @@ function App() {
   
 function sendSearch() {
   console.log(searchTerm);
-  axios.get(`https://api.giphy.com/v1/gifs/search?api_key=qU50qUPmY2TzvPcU5FXsYtYz4EdFcfsl&q=${searchTerm}&limit=25&offset=0&rating=g&lang=en&bundle=messaging_non_clips`)
+  axios.get(`/api/search/${searchTerm}`)
   .then((response) => {
-    console.log(response.data.data)
-    setSearchResults(response.data.data)
+    console.log(response.data)
+    setSearchResults(response.data)
   }).catch((err) => {
     console.log('search error', err)
     alert('Something went wrong!');
