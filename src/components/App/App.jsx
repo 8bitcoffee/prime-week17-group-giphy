@@ -9,6 +9,7 @@ function App() {
 
   let [searchTerm, setSearchTerm] = useState('');
   let [searchResults, setSearchResults] = useState([])
+  let [favorite, setFavorite] = useState({link: '', title: '', ID: '', category: ''})
   
 function sendSearch() {
   console.log(searchTerm);
@@ -20,6 +21,20 @@ function sendSearch() {
     console.log('search error', err)
     alert('Something went wrong!');
   })
+}
+function handleClick(item) {
+  // ID provided by GIPHY
+let gif = item;
+console.log(gif)
+  setFavorite({...favorite, link: gif.images.fixed_height.url, title: gif.title, ID: gif.id, category: 'wild'})
+  console.log(favorite)
+  axios.post('/api/favorites', favorite).then((response) =>{
+    console.log('Post successful')
+}).catch((error)=>{
+  console.log('error posting', error)
+  alert('Something Went Wrong!')
+})
+
 }
 
   return (
@@ -39,11 +54,13 @@ function sendSearch() {
           <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
           <button onClick={sendSearch}>Click me to search</button>
           {/* {JSON.stringify(searchResults)} */}
-          <ul>
-          {searchResults.map((item) => {
-          return <li><img src={item.embed_url} /></li>
-          })}
-      </ul>
+          <div className="searchDisplay">
+          {searchResults.map((item, i) => {
+          return (<div onClick={() => handleClick(item)} key={i} id={item.id}><img  src={item.images.fixed_height.url} />
+            <button >Add to Favorites</button>
+          </div>
+          )})}
+          </div>
         </Route>
         <Route path='/favorites'>
           <Favorites/>
