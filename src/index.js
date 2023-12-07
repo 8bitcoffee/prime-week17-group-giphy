@@ -23,7 +23,7 @@ function* rootSaga(){
 
 function* fetchCatagories(){ // Get categories from DB
   try {
-    const categoryResults = yield axios.get('/category');
+    const categoryResults = yield axios.get('/api/categories');
     yield put({
       type: "SET_CATEGORIES",
       payload: categoryResults.data
@@ -37,7 +37,7 @@ function* fetchCatagories(){ // Get categories from DB
 
 function* fetchFavorites(){ // Get favorites from DB
   try {
-    const favoriteResults = yield axios.get('/favorite');
+    const favoriteResults = yield axios.get('/api/favorites');
     yield put({
       type: "SET_FAVORITES",
       payload: favoriteResults.data
@@ -51,7 +51,7 @@ function* fetchFavorites(){ // Get favorites from DB
 
 function* fetchSearchResults(action){ // Get search results
   try {
-    const favoriteResults = yield axios.get('/search', action.payload);
+    const favoriteResults = yield axios.get('/api/search', action.payload);
     yield put({
       type: "SET_SEARCH_RESULTS",
       payload: favoriteResults.data
