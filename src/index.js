@@ -51,15 +51,15 @@ function* fetchFavorites(){ // Get favorites from DB
 
 function* fetchSearchResults(action){ // Get search results
   try {
-    const favoriteResults = yield axios.get('/favorite', action.payload);
+    const favoriteResults = yield axios.get('/search', action.payload);
     yield put({
-      type: "SET_FAVORITES",
+      type: "SET_SEARCH_RESULTS",
       payload: favoriteResults.data
     })
   }
   catch (error) {
-    console.error("Error in GET '/favorite' - Saga fetchFavorites()", error);
-    alert("Error in GET '/favorite'. See console.");
+    console.error("Error in GET '/search' - Saga fetchSearchResults()", error);
+    alert("Error in GET '/search'. See console.");
   }
 }
 // ----------------------------
