@@ -7,7 +7,6 @@ import CardActions from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import IconButton from '@mui/material/IconButton';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { Typography } from '@mui/material';
 
 function FavoritesItem(props){
 
@@ -17,9 +16,7 @@ function FavoritesItem(props){
     const [currentCategory, setCurrentCategory] = useState("category");
     
     const addCategory = (gifId, categoryId) => {
-        console.log(gifId, Number(categoryId));
         axios.put(`/api/favorites/${gifId}`, {category: Number(categoryId)}).then((result) => {
-            console.log('category set:', categoryId);
             dispatch({type:"FETCH_FAVORITES"});
         }).catch((error) => {
             console.log('error setting category', error);
@@ -29,7 +26,6 @@ function FavoritesItem(props){
 
     const removeFromFavorites = (id) =>{
         axios.delete(`/api/favorites/${id}`).then((result)=>{
-            console.log(`GIF id: ${id} deleted from favorites`);
             dispatch({type: "FETCH_FAVORITES"});
         })
         .catch((error) => {
@@ -56,14 +52,14 @@ function FavoritesItem(props){
                 component="img"
                 image={gif.GIPHY_URL}
                 alt={gif.GIPHY_Title}
+                sx={{maxHeight: "500px", minHeight:"250px"}}
             />
-            <CardActions disableSpacing>
+            <CardActions sx={{textAlign:"center"}}>
                 {gif.category_id == null ? <p>{"Category unassigned"}</p> : <p>{`Current category: ${returnName(gif.category_id)}`}</p>}
                 <IconButton
                     aria-label='delete'
                     onClick={()=>removeFromFavorites(gif.id)}
-                >
-                    <DeleteForeverIcon variant="filled"/>
+                >Delete<DeleteForeverIcon variant="filled"/>
                 </IconButton>
                 <select id="category-select" onChange={(e) => addCategory(gif.id, e.target.value)} value={currentCategory}>
                     <option disabled value="category">Pick Category</option>

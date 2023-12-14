@@ -71,7 +71,7 @@ function* addFavorite(action) {
     yield put({type: 'FETCH_FAVORITES'})
   } 
   catch (error) {
-    console.log('error adding favorite', error);
+    console.error('Error adding favorite', error);
     alert('Something Went Wrong!');
   }
 }
@@ -82,14 +82,12 @@ function* filterFavorites(action){
       yield put({type: "FETCH_FAVORITES"})
     }
     else {
-      console.log(`filtering by category ${action.payload}`)
       const results = yield axios.get(`/api/favorites/${action.payload}`);
-      console.log(results);
       yield put({type: 'SET_FAVORITES', payload: results.data})
     }  
   }
   catch (error) {
-    console.log("Error filtering favorites", error);
+    console.error("Error filtering favorites", error);
     alert('Something Went Wrong!');
   }
 }

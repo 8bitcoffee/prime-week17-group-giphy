@@ -1,6 +1,12 @@
 import React, {useState} from 'react';
+import './Search.css';
 import axios from 'axios';
 import {useDispatch} from 'react-redux';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 function Search(){
 
@@ -10,10 +16,8 @@ function Search(){
   
     function sendSearch(e) {
         e.preventDefault();
-        console.log(searchTerm);
         axios.get(`/api/search/${searchTerm}`)
         .then((response) => {
-            console.log(response.data);
             setSearchResults(response.data);
             setSearchTerm("");
         }).catch((err) => {
@@ -22,17 +26,15 @@ function Search(){
         })
     }
     // Function for adding a gip to favorites
-    function handleClick(item) {
+    function handleClick(gif) {
     // ID provided by GIPHY
-        let gif = item;
-        console.log(gif)
         let favorite = {link: gif.images.fixed_height.url, title: gif.title, ID: gif.id};
-        console.log(favorite)
         dispatch({type: 'ADD_FAVORITE', payload: favorite})
     }
 
     return( 
         <div>
+            <br></br>
             <form>
                 <input placeholder="Search GIPHY" type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
                 <button onClick={sendSearch}>Click me to search</button>
@@ -40,12 +42,29 @@ function Search(){
             <br/>
             <hr/>
             <br/>
-            <div className="searchDisplay">
+            <div id="search-display">
                 {searchResults.map((item, i) => {
                     return (
-                        <div onClick={() => handleClick(item)} key={i} id={item.id}><img  src={item.images.fixed_height.url} />
-                            <button >Add to Favorites</button>
-                        </div>
+                        <Card
+                            key={i}
+                            className='gif-card'
+                            elevation={8}
+                            sx={{maxWidth:"300px", marginTop: "10px", marginBottom: "10px"}}
+                        >
+                            <CardMedia
+                                component="img"
+                                image={item.images.fixed_height.url}
+                                alt={item.title}
+                                sx={{maxHeight: "500px", minHeight:"300px"}}
+                            />
+                            <CardActions sx={{textAlign:"center"}}>
+                                <IconButton
+                                    aria-label='delete'
+                                    onClick={() => handleClick(item)}
+                                >Add to Favorites<FavoriteIcon variant="filled" sx={{color:"darkred"}}/>
+                                </IconButton>
+                            </CardActions>
+                        </Card>
                 )})}
             </div>
         </div>

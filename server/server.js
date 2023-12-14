@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const favoriteRouter = require('./routes/favorite.router');
 const categoryRouter = require('./routes/category.router');

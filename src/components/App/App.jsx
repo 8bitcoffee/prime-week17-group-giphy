@@ -2,7 +2,6 @@ import {HashRouter as Router, Route} from 'react-router-dom';
 import Favorites from '../Favorites/Favorites';
 import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import React, {useState} from 'react';
-import axios from 'axios';
 import Search from '../Search/Search';
 
 
@@ -20,6 +19,7 @@ function App() {
             <li><Link to='/favorites'>Favorites</Link></li>
           </ul>
         </nav>
+        <hr/>
         <Route exact path='/'>
           <Search/>
         </Route>

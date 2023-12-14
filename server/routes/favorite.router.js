@@ -47,7 +47,6 @@ router.post('/', (req, res) => {
 
 // update a favorite's associated category
 router.put('/:id', (req, res) => {
-  console.log(req.body.category);
   let queryText = `
     UPDATE "favorites"
     SET category_id = $1
