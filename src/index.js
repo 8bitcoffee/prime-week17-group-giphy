@@ -12,16 +12,18 @@ import axios from 'axios';
 
 // Creating rootSaga for all Sagas to be called
 function* rootSaga(){
-  yield takeEvery("FETCH_CATEGORIES", fetchCatagories);
+  yield takeEvery("FETCH_CATEGORIES", fetchCategories);
   yield takeEvery("FETCH_FAVORITES", fetchFavorites);
   yield takeEvery("FETCH_SEARCH_RESULTS", fetchSearchResults);
+  yield takeEvery("FETCH_FILTERED_FAVORITES", filterFavorites);
+  yield takeEvery('ADD_FAVORITE', addFavorite);
 }
 
 // ----------------------------
 // Sagas
 // ----------------------------
 
-function* fetchCatagories(){ // Get categories from DB
+function* fetchCategories(){ // Get categories from DB
   try {
     const categoryResults = yield axios.get('/api/categories');
     yield put({
@@ -62,6 +64,35 @@ function* fetchSearchResults(action){ // Get search results
     alert("Error in GET '/search'. See console.");
   }
 }
+
+function* addFavorite(action) {
+  try {
+    yield axios.post('/api/favorites', action.payload);
+    yield put({type: 'FETCH_FAVORITES'})
+  } 
+  catch (error) {
+    console.log('error adding favorite', error);
+    alert('Something Went Wrong!');
+  }
+}
+
+function* filterFavorites(action){
+  try {
+    if (action.payload == "all"){
+      yield put({type: "FETCH_FAVORITES"})
+    }
+    else {
+      console.log(`filtering by category ${action.payload}`)
+      const results = yield axios.get(`/api/favorites/${action.payload}`);
+      console.log(results);
+      yield put({type: 'SET_FAVORITES', payload: results.data})
+    }  
+  }
+  catch (error) {
+    console.log("Error filtering favorites", error);
+    alert('Something Went Wrong!');
+  }
+}
 // ----------------------------
 // End Sagas
 // ----------------------------
@@ -99,6 +130,7 @@ const searchResults = (state = [], action) => { // Holds all search results in a
       return state;
   }
 }
+
 // ----------------------------
 // End Reducers
 // --------------------------------

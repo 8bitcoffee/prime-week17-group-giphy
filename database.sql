@@ -19,9 +19,9 @@ INSERT INTO "categories"
 -- Favorites table:
 CREATE TABLE "favorites" (
 	"id" SERIAL PRIMARY KEY,
-	"GIPHY_URL" VARCHAR(2000),
-	"GIPHY_Title" VARCHAR(200),
-	"GIPHY_ID" VARCHAR(200),
+	"GIPHY_URL" VARCHAR(2000) NOT NULL,
+	"GIPHY_Title" VARCHAR(200) NOT NULL,
+	"GIPHY_ID" VARCHAR(200) NOT NULL,
 	"category_id" INTEGER references "categories"
 	);
 

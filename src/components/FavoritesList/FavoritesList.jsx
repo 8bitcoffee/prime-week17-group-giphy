@@ -1,12 +1,13 @@
 import React from 'react';
 import './FavoritesList.css';
 import FavoritesItem from '../FavoritesItem/FavoritesItem';
+import { useSelector } from 'react-redux';
 
 function FavoritesList(props){
-    const filteredFavorites = props.filteredFavorites;
+    const favorites = useSelector(store=>store.favorites);
     return(
         <div id="favorites-list">
-            {filteredFavorites.map(gif => {
+            {favorites.map(gif => {
                 return(
                     <FavoritesItem key={gif.id} gif={gif}/>
                 )
